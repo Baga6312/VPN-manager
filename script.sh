@@ -101,7 +101,7 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 	if echo "$ip" | grep -qE '^(10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.|192\.168)'; then
 		echo
     sleep 1 
-		echo "This server is behind NAT. Selecting your public ip:" &&  curl ifconfig.me 
+		echo "This server is behind NAT. Selecting your public ip:" &&  echo && curl ifconfig.me 
 
 		get_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<< "$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 	fi
@@ -113,7 +113,7 @@ fi
 
   sleep 1 
   echo "Setting OpenVPN to listen on port 1149"
-  declare port =1149 
+  port =1149 
 
   echo
 	echo "Select a DNS server for the clients:"
