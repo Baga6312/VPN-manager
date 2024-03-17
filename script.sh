@@ -99,9 +99,10 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 	fi
 
 	if echo "$ip" | grep -qE '^(10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.|192\.168)'; then
+    ip_addr = $(curl ifconfig.me)
 		echo
     sleep 1 
-		echo "This server is behind NAT. Selecting your public ip:" &&  echo && curl ifconfig.me 
+		echo "This server is behind NAT. Selecting your public ip:" $ip_addr  
 
 		get_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<< "$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 	fi
@@ -135,7 +136,6 @@ fi
 	read -p "Name [client]: " unsanitized_client
 	client=$(sed 's/[^0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-]/_/g' <<< "$unsanitized_client")
 	[[ -z "$client" ]] && client="client"
-	echo  
   
 
   #cheking for firewalld 
@@ -147,6 +147,7 @@ fi
 			firewall="iptables"
 		fi
 	fi
-  echo "firewall is setup and ready "
+  echo "firewall is setup and ready to use"
 
+  echo "the installation script is ready to begin" 
   
