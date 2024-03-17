@@ -99,7 +99,7 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 	fi
 
 	if echo "$ip" | grep -qE '^(10\.|172\.1[6789]\.|172\.2[0-9]\.|172\.3[01]\.|192\.168)'; then
-    ip_addr = $(curl ifconfig.me)
+    ip_addr=$(curl -s ifconfig.me)
 		echo
     sleep 1 
 		echo "This server is behind NAT. Selecting your public ip:" $ip_addr  
@@ -110,11 +110,12 @@ fi
 
   echo 
   sleep 1 
-  echo "selecing default protocol as UDP " 
+  echo "selecing default protocol as: UDP " 
   protocol=udp
 
+  echo
   sleep 1 
-  echo "Setting OpenVPN to listen on port 1149"
+  echo "Setting OpenVPN to listen on port: 1149"
   port="1149" 
 
   echo
