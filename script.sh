@@ -107,13 +107,14 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 	fi
 fi 
 
+  echo 
   sleep 1 
   echo "selecing default protocol as UDP " 
   protocol=udp
 
   sleep 1 
   echo "Setting OpenVPN to listen on port 1149"
-  port =1149 
+  port="1149" 
 
   echo
 	echo "Select a DNS server for the clients:"
