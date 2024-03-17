@@ -158,7 +158,7 @@ if [[ ! -e /etc/openvpn/server/server.conf ]]; then
 	echo
 	echo "UDP protocol will be used during the communication"
 		protocol=tcp
-	esac
+
 	echo
   echo "Selecting default port(1194)"
 
