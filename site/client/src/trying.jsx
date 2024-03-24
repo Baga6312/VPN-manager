@@ -36,10 +36,9 @@ function FetchDataButton(props) {
       {dataUsers.length > 0 && (
         <div>
           <h2>Fetched Users:</h2>
-          {/* Display your fetched data here */}
           <ul>
             {dataUsers.map((user) => (
-              <li key={user.id}>{user.name} (ID: {user.id})</li>
+              <li key={user.id}>{user.name})</li>
             ))}
           </ul>
         </div>
