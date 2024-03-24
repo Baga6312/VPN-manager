@@ -1,6 +1,5 @@
-import { useEffect}  from 'react' 
 
-const Postdata = ({name , mail , password })=> { 
+const Postdata = ( name, mail, password  )=> { 
 
   const RegisterUser = async (event) => { 
    event.preventDefault()
@@ -18,10 +17,6 @@ const Postdata = ({name , mail , password })=> {
     const data = await response.json()
     console.log (data)
   }
-
-  useEffect(()=>{
-    RegisterUser()
-  },[])
 
   return(
   <div>

@@ -27,7 +27,7 @@ function App() {
               onChange={(e)=> setPassword(e.target.value)}
               type="password" 
               placeholder="password"/><br/>
-      <Postdata user={name , mail , password }/>
+      <Postdata user={{ name: name, mail: mail, password: password }} />
       <Showdata />
 
 
