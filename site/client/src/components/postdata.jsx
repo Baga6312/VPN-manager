@@ -1,21 +1,12 @@
+import axios from 'axios'
 
-const Postdata = ( name, mail, password  )=> { 
+const baseurl = "http://localhost:8000"
+
+const Postdata = ({name , mail , password })=> { 
 
   const RegisterUser = async (event) => { 
-   event.preventDefault()
-    const response = await  fetch("http://localhost:8000/test" , { 
-      method: 'POST', 
-      headers: {
-       'Content-Type':'application/json' 
-      },
-      body: JSON.stringify({
-        name ,
-        mail , 
-        password  
-      })
-    })
-    const data = await response.json()
-    console.log (data)
+    event.preventDefault()
+    axios.post(`${baseurl}/test` , {name , mail , password})
   }
 
   return(

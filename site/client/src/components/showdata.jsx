@@ -1,23 +1,19 @@
+import axios from  'axios'
 import { useEffect , useState } from 'react'  ; 
 
 const Showdata= () => { 
   const [isLoading , setIsLoading] = useState(false) 
   const [userData , setUserData ] = useState([])
 
-  const fetchData = async (event) => {
-    event.preventDefault() 
+
+  const fetchData = async (event) => { 
+    event.preventDefault()
     setIsLoading(true)
-    try{
-      const response = await fetch ("http://localhost:8000/test" ,{
-        method: 'GET' , 
-        headers: {
-          'Content-Type':'application/json' 
-        }}) 
-      const data = await response.json()
-      setUserData(data)
-    }catch(err){
+    try{ 
+      const data = await axios.get("http://localhost:8000/test").then(({data})=> setUserData(data ))
+    }catch(err){ 
       console.log(err)
-    }finally{
+    }finally{ 
       setIsLoading(false)
     }
   }

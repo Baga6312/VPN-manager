@@ -2,6 +2,7 @@ import {  useState } from 'react'
 import './App.css'
 import Showdata from './components/showdata.jsx'
 import Postdata from './components/postdata.jsx'
+import Modifdata from './components/modifdata.jsx'
 
 function App() {
   const [name , setName] = useState('')
@@ -27,9 +28,9 @@ function App() {
               onChange={(e)=> setPassword(e.target.value)}
               type="password" 
               placeholder="password"/><br/>
-      <Postdata user={{ name: name, mail: mail, password: password }} />
+      <Postdata name={name} mail={mail} password={password} /> 
       <Showdata />
-
+      <Modifdata />
 
     </form>
   </div>
