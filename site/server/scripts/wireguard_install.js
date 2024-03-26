@@ -59,7 +59,7 @@ module.exports.download_the_linux_shit = () => {
 
 module.exports.download_wingay_shit = () => { 
   // the only way is to compile from source and use the executable 
-  // TODO : 
+  // TODO : scripts 
   // download the github repo 
   // building 
   // find a way to use make without downloading it 
