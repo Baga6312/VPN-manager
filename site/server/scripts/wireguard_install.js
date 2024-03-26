@@ -3,12 +3,12 @@ const fs = require("fs")
 const {exec} = require("child_process");
 
 
-module.exports.getDist = () => { 
+getDist = () => { 
   const fileContent =  fs.readFileSync('/etc/os-release' , 'utf-8'  )
   return fileContent.split('\n')[0].split('"')[1]
 }
  
-module.exports.download_the_linux_shit = () => {
+Download_the_linux_shit = () => {
     if (getDist() == "Arch Linux") { 
        exec("sudo pacman -S linux-headers base-devel pkg-config" , (error, stdout, stderr) => {
         if (error) {
@@ -56,12 +56,17 @@ module.exports.download_the_linux_shit = () => {
         else console.log(`stdout: ${stdout}`)})
 }
 
-
-module.exports.download_wingay_shit = () => { 
   // the only way is to compile from source and use the executable 
   // TODO : scripts 
   // download the github repo 
   // building 
   // find a way to use make without downloading it 
+  //   functions to be made  : 
+  //        checkChocolaty()
+  //        checkMake()
+  //        checkGit()
+
+
+Download_wingay_shit = () => { 
 }
 
