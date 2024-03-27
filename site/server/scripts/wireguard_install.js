@@ -3,47 +3,48 @@ const fs = require("fs")
 const {exec} = require("child_process");
 
 
-getDist = () => { 
+const Get_Dist = () => { 
   const fileContent =  fs.readFileSync('/etc/os-release' , 'utf-8'  )
   return fileContent.split('\n')[0].split('"')[1]
 }
  
-Download_the_linux_shit = () => {
+const Download_the_linux_shit = () => {
+
     if (getDist() == "Arch Linux") { 
        exec("sudo pacman -S linux-headers base-devel pkg-config" , (error, stdout, stderr) => {
-        if (error) {
-          console.log(`error: ${error.message}`)
-          return;
-        }
-        if (stderr) {
-          console.log(`stderr: ${stderr}`)
-          return;
-        }
+          if (error) {
+            console.log(`error: ${error.message}`)
+            return;
+          }
+          if (stderr) {
+            console.log(`stderr: ${stderr}`)
+            return;
+          }
         console.log(`stdout: ${stdout}`)})
 
-       exec("sudo pacman -S --noconfirm  wireguard", (error, stdout, stderr) => {
-        if (error) {
-          console.log(`error: ${error.message}`)
-          return;
-        }
-        if (stderr) {
-          console.log(`stderr: ${stderr}`)
-          return;
-        }
-        console.log(`stdout: ${stdout}`)})
+        exec("sudo pacman -S --noconfirm  wireguard", (error, stdout, stderr) => {
+          if (error) {
+            console.log(`error: ${error.message}`)
+            return;
+          }
+          if (stderr) {
+            console.log(`stderr: ${stderr}`)
+            return;
+          }else { 
+          console.log(`stdout: ${stdout}`)})
         
-        } else if (getDist() == "Ubuntu")
+    } else if (getDist() == "Ubuntu") {
 
         exec("sudo apt-get install libelf-dev linux-headers-$(uname -r) build-essential pkg-config" , (error, stdout, stderr) => {
-        if (error) {
-          console.log(`error: ${error.message}`)
-          return;
-        }
-        if (stderr) {
-          console.log(`stderr: ${stderr}`)
-          return;
+          if (error) {
+            console.log(`error: ${error.message}`)
+            return;
           }
-        else console.log(`stdout: ${stdout}`)})
+          if (stderr) {
+            console.log(`stderr: ${stderr}`)
+            return;
+          }
+          else console.log(`stdout: ${stdout}`)})
         exec("sudo apt install -y wireguard", (error, stdout, stderr) => {
         if (error) {
           console.log(`error: ${error.message}`)
@@ -52,8 +53,10 @@ Download_the_linux_shit = () => {
         if (stderr) {
           console.log(`stderr: ${stderr}`)
           return;
-          }
-        else console.log(`stdout: ${stdout}`)})
+        } else {
+          console.log(`stdout: ${stdout}`)
+        }
+      })
 }
 
   // the only way is to compile from source and use the executable 
@@ -66,7 +69,6 @@ Download_the_linux_shit = () => {
   //        checkMake()
   //        checkGit()
 
-
-Download_wingay_shit = () => { 
-}
-
+Check_Chocolaty()
+  // const Download_wingay_shit = () => { 
+  // }
