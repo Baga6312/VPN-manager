@@ -93,6 +93,8 @@ const Check_Install_Make = () => {
 
 
 // clone the wireguard repo here 
-const clone_repo = () => { 
-exec('')
+const Clone_repo = () => { 
+exec('git clone https://github.com/WireGuard/wireguard-tools ' , {shell : "powershell.exe"} , (stderr , err , stdout)=> { if (stdout) => console.log(stdout)})
+exec('cd wireguard-tools && cd src ') 
+exec('make ')
 }
