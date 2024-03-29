@@ -1,11 +1,12 @@
-const { exec } = require("child_process");
-const { os } = require("os");
+const { exec, spawn } = require("child_process");
+const https = require("https");
+const fs = require("fs");
 
 const Install_chocolaty = () => {
   // automating the Execution policy for the user
   // getting the state of the Execution policy
   const checkPolicies = "ExecutionPolicy";
-  exec(`Get-${checkPolicies}`, { shell: "powershell.exe" }, (err, stdout) => {
+  exec(Get-${checkPolicies}, { shell: "powershell.exe" }, (err, stdout) => {
     err
       ? console.log(Error: ${err})
       : stdout == "AllSigned"
@@ -13,44 +14,62 @@ const Install_chocolaty = () => {
       : exec(
           //  setting the execution policys to set AllSigne as a admin user
           //  user will be prompted with UAC
-          `powershell -WindowStyle Hidden -command "start-process cmd -verb runas -argumentlist '/c powershell -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy AllSigned -Force -Scope CurrentUser"'"`,
+          `powershell -WindowStyle Hidden -command "start-process cmd -verb runas -argumentlist '/c powershell -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy RemoteSigned -Force -Scope CurrentUser"'"`,
           { shell: "powershell.exe" },
           (error, sttdout) => {
             error ? console.error(Error: ${error.message}) : null;
             exec(
-              `Get-${checkPolicies}`,
+              Get-${checkPolicies},
               { shell: "powershell.exe" },
               (err, stttdout, stderr) => {
                 err
                   ? console.log(Error :${err})
                   : stderr
                   ? console.log(Standard Error: ${stderr})
-                  : console.log(Execution Policy set to ${stttdout} );
+                  : console.log(Execution Policy set to ${stttdout});
               }
             );
           }
         );
   });
-  // installing chocloty for real this time
-  // TODOS : install the fucking script first with curl or http idk u do  then executing it
-  // change the below idiot
-  exec(
-    `[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`,
-    { shell: "powershell.exe" },
-    (err, stdout, stderr) => {
-      err ? console.log(Err ${err}) : stderr ? console.log(stderr) : null;
-    }
-  );
-  // also fix this 
-  exec(`
-    C:\Users\\${os.userInfo()}\AppData\Local\Temp\chocolatey\chocoInstall\\tools\\chocolateyInstall.ps1
-  `);
 };
 const Check_Chocolaty = () => {
   // checking if chocolaty exists
   exec("choco -v", (error, stdout) => {
-    error ? Install_chocolaty() : null;
+    error 
+      ? (return false ) 
+      : (return true) ; 
   });
 };
+const install_script = () => {
+  // downlaod the script for chocolaty
+  const url = "https://community.chocolatey.org/install.ps1";
+  https.get(url, (res) => {
+    const path = ${__dirname}/install.ps1;
+    const file_path = fs.createWriteStream(path);
+    res.pipe(file_path);
+    file_path.on("finish", () => {
+      file_path.close();
+      console.log("download Complete");
+    });
+  });
 
-Check_Chocolaty();
+  // installing the script with admin privi as a process
+  const lsProcess = spawn("powershell", [
+    // "-WindowStyle Hidden",
+    "-command",
+    `start-process cmd -verb runas -WindowStyle Hidden -argumentlist '/c powershell C:\\Users\\asma123\\Desktop\\check\\install.ps1' `,
+  ]);
+
+  lsProcess.stdout.on("data", (data) => {
+    console.log(${data});
+  });
+
+  lsProcess.stderr.on("data", (data) => {
+    console.log(stderr:\n${data}); // Use "stderr" for error output
+  });
+
+  lsProcess.on("exit", (code) => {
+    console.log(Process ended with ${code});
+  });
+};
