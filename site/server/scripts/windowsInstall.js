@@ -88,4 +88,11 @@ const Check_Install_Make = () => {
     (stderr)
     ?exec( `powershell -command "start-process cmd -verb runas -WindowStyle Hidden -argumentlist '/c choco install make -y"' `)
     :null ; 
+    console.log(stdout)
   })
+
+
+// clone the wireguard repo here 
+const clone_repo = () => { 
+exec('')
+}
