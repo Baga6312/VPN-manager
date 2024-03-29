@@ -59,18 +59,6 @@ const Download_the_linux_shit = () => {
       })
 }
 
-const Check_Chocolaty = () => { 
-  exec("" ,  (error , stdout)=> { 
-    if (error) { 
-      console.log(`Error: ${error.message}`)
-      return ; 
-    } 
-    if (stdout) { 
-        console.log(stdout)
-        return  ; 
-    }
-  })
-}
   // the only way is to compile from source and use the executable 
   // TODO : scripts 
   // download the github repo 
@@ -81,6 +69,3 @@ const Check_Chocolaty = () => {
   //        checkMake()
   //        checkGit()
 
-Check_Chocolaty()
-  // const Download_wingay_shit = () => { 
-  // }
