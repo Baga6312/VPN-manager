@@ -1,6 +1,0 @@
----
-- name: Example ansible playbook 
-  hosts: all 
-  remote_user: Baga6312
-  roles: 
-    - update
