@@ -7,7 +7,7 @@ import Dashboard from './components/Dashboard';
 const App = () => {
   return (
     <Router>
-      <div className="App">
+      <div className="login">
         <Routes>
           <Route path="/" element={<LoginForm/>}/>
           <Route path="/login" element={<LoginForm/>}/>
@@ -15,7 +15,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard/>}/>
         </Routes>
       </div>
-    </Router>
+    </Router>  
   );
 };
 

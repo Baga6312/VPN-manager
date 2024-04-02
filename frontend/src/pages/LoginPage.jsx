@@ -11,7 +11,6 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       await authService.login(username, password);
       history.push('/dashboard'); // Redirect to dashboard after successful login
