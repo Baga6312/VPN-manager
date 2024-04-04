@@ -6,8 +6,10 @@ const authService = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const history = useNavigate();
 
+  // TODO : 
+  // fetch from database instead from localStorage 
   const login = (username, password) => {
-      const userinput =  JSON.parse(localStorage.getItem('user')).username; 
+      // const userinput =  JSON.parse(localStorage.getItem('user')).username; 
       if(username === userinput){
         const user = {username}
         setCurrentUser(user) 
@@ -23,7 +25,7 @@ const authService = () => {
   const signup = (username, password) => {
     const newUser = { username };
     setCurrentUser(newUser);
-    localStorage.setItem('user', JSON.stringify(newUser));
+    // localStorage.setItem('user', JSON.stringify(newUser));
     history('/dashboard'); 
   };
 
