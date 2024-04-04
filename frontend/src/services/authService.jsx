@@ -1,44 +1,50 @@
-import React, { useState } from 'react';
-import axios from 'axios'; 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const AuthService = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+const authService = () => { 
+  const [currentUser, setCurrentUser] = useState(null);
+  const history = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post('/api/login', { username, password });
-      const { token } = response.data;
-
-      localStorage.setItem('token', token);
-
-      window.location.href = '/dashboard';
-    } catch (error) {
-      setError('Invalid username or password');
+  const login = (username, password) => {
+    if (username ) {
+     //  === JSON.parse(localStorage.getItem('user'))) {
+      const user = { username };
+      setCurrentUser(user);
+      // localStorage.setItem('user', JSON.stringify(user));
+      history('/dashboard');  
+      return true;
+    } else {
+      console.error("user does not exist ")
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-
-    window.location.href = '/login';
+  const signup = (username, password) => {
+    const newUser = { username };
+    setCurrentUser(newUser);
+    localStorage.setItem('user', JSON.stringify(newUser));
+    history('/dashboard'); 
   };
 
-  return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Login</button>
-      </form>
-      {error && <p>{error}</p>}
-      <button onClick={handleLogout}>Logout</button>
-    </div>
-  );
-};
 
-export default AuthService;
+  const logout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('user');
+    history('/login');  
+  };
+
+  const  getCurrentUser = () => {
+    const user = localStorage.getItem('user');
+    console.log(user)
+    return JSON.parse(user);
+  };
+
+  return {
+    login,
+    logout,
+    signup,
+    getCurrentUser,
+    currentUser, 
+  };
+}
+
+export default authService ; 

@@ -6,20 +6,21 @@ import { useHistory } from 'react-router-dom';
 const DashboardPage = () => {
   const [userData, setUserData] = useState({});
   const history = useHistory();
+  const auth = authService()
 
   useEffect(() => {
     // Fetch user data from authService
-    const user = authService.getCurrentUser();
+    const user = auth.getCurrentUser();
     if (!user) {
-      history.push('/login'); // Redirect to login if user is not authenticated
+      history('/login'); // Redirect to login if user is not authenticated
     } else {
       setUserData(user);
     }
   }, [history]);
 
   const handleLogout = () => {
-    authService.logout();
-    history.push('/login');
+    auth.logout();
+    history('/login');
   };
 
   return (

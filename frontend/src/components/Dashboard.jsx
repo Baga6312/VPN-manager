@@ -1,25 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Container, Row, Col, Card } from 'react-bootstrap';
-import authService from '../services/authService';
+import  authService  from '../services/authService';
 import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState({});
-  const history = useNavigate();
+  const navigate = useNavigate();
+  const auth = authService()
 
   useEffect(() => {
     // Fetch user data from authService
-    const user = authService.getCurrentUser();
+    const user =  auth.getCurrentUser() ; 
     if (!user) {
-      history.push('/login'); // Redirect to login if user is not authenticated
+      navigate('/login'); // Redirect to login if user is not authenticated
     } else {
       setUserData(user);
     }
   }, [history]);
 
   const handleLogout = () => {
-    authService.logout();
-    history.push('/login');
+    auth.logout();
+    navigate('/login');
   };
 
   return (

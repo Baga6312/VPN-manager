@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
-import authService from '../services/authService';
-import { useNavigate} from 'react-router-dom';
+import  authService  from '../services/authService';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const history = useNavigate();
+  const navigate = useNavigate();
+  const auth = authService()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      await authService.signup(username, email, password);
-      history.push('/dashboard'); // Redirect to dashboard after successful signup
+      auth.signup(username, password);
+      navigate('/dashboard'); // Redirect to dashboard after successful signup
     } catch (error) {
-      setError('Error signing up. Please try again.');
+      setError(`Error signing up. Please try again. ${error }`);
     }
   };
 
@@ -30,11 +29,6 @@ const SignupPage = () => {
             <Form.Group controlId="formBasicUsername">
               <Form.Label>Username</Form.Label>
               <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </Form.Group>
-
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
