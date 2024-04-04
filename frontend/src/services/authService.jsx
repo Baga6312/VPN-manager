@@ -2,19 +2,21 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const authService = () => { 
+
   const [currentUser, setCurrentUser] = useState(null);
   const history = useNavigate();
 
   const login = (username, password) => {
-    if (username ) {
-     //  === JSON.parse(localStorage.getItem('user'))) {
-      const user = { username };
-      setCurrentUser(user);
-      // localStorage.setItem('user', JSON.stringify(user));
-      history('/dashboard');  
-      return true;
-    } else {
-      console.error("user does not exist ")
+      const userinput =  JSON.parse(localStorage.getItem('user')).username; 
+      if(username === userinput){
+        const user = {username}
+        setCurrentUser(user) 
+        localStorage.setItem('user', JSON.stringify(user));
+        history('/dashboard');  
+        return true ; 
+    } else  {
+        console.error(`user does not exist ${error}`)
+        return false ; 
     }
   };
 
