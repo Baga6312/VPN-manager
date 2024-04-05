@@ -3,41 +3,47 @@ import { useNavigate } from 'react-router-dom';
 
 const authService = () => { 
 
+  const baseurl = "HTTP://localhost:3000/api/"
   const [currentUser, setCurrentUser] = useState(null);
   const history = useNavigate();
 
-  // TODO : 
-  // fetch from database instead from localStorage 
   const login = (username, password) => {
-      // const userinput =  JSON.parse(localStorage.getItem('user')).username; 
-      if(username === userinput){
-        const user = {username}
-        setCurrentUser(user) 
-        localStorage.setItem('user', JSON.stringify(user));
-        history('/dashboard');  
-        return true ; 
-    } else  {
-        console.error(`user does not exist ${error}`)
-        return false ; 
-    }
+    // change this shit with jwt  
+    axios.get(`${baseurl}user`).then((data )=>{
+      console.log(`user : ${data}`)
+      if ( data[0] === username && data[1] === password ){
+        setCurrentUser(data[0])
+        history('/dashboard')
+        return true 
+      }
+    }).catch((err)=>{
+      console.log(`error loging in : ${err}`)
+    })
   };
 
   const signup = (username, password) => {
-    const newUser = { username };
-    setCurrentUser(newUser);
-    // localStorage.setItem('user', JSON.stringify(newUser));
+    axios.post(`${baseurl}user` ,  {username , password }).then((data)=>{
+      setCurrentUser(username) 
+      console.log("data posted successfully")
+    }).catch((err)=>{
+      console.log(err)
+    })
     history('/dashboard'); 
   };
 
-
-  const logout = () => {
+  const logout = (currentUser) => {
     setCurrentUser(null);
-    localStorage.removeItem('user');
+    axios.put(`${baseurl}user` , {currentUser})
     history('/login');  
   };
 
   const  getCurrentUser = () => {
-    const user = localStorage.getItem('user');
+    let user ;
+    axios.get(`${baseurl}user`).then((data)=>{
+      user = data ; 
+    }).catch((err)=>{
+      console.log(err)
+    })
     console.log(user)
     return JSON.parse(user);
   };
