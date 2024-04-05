@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import  authService from '../services/authService';
-import { useHistory } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 const DashboardPage = () => {
   const [userData, setUserData] = useState(null);
-  const history = useHistory();
+  const history = useNavigate();
   const auth = authService()
 
   useEffect(() => {
-  const user = auth.getCurrentUser()
-    if (!user) {
-      history('/login'); // Redirect to login if user is not authenticated
-    } else {
-      setUserData(user);
-    }
-  }, [history]);
+     const user = auth.getCurrentUser();
+       if (!user) {
+         history('/login'); // Redirect to login if user is not authenticated
+       } else {
+         setUserData(user);
+       }
+     }, [history]
+  );
 
-  const handleLogout = () => {
-    auth.logout();
-    history('/login');
-  };
+     const handleLogout = () => {
+       auth.logout();
+       history('/login');
+   };
 
   return (
     <Container className="mt-4">

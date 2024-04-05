@@ -1,45 +1,69 @@
 import axios from 'axios'  ; 
-import { useState } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const authService = () => { 
 
-  const baseurl = "http://localhost:5000/api/user"
-  const [currentUser, setCurrentUser] = useState(null);
+  const baseurl = "http://localhost:5000/api/user/"
+  const [currentUser, setCurrentUser] = useState(``);
+  const [IsAuthenthicated,setIsAuthenthicated] = useState(false)
   const history = useNavigate();
 
-  const login = async (username, password) => {
+
+  useEffect(() => {
+    const user = localStorage.getItem('username');
+    setCurrentUser(user || ''); 
+    setIsAuthenthicated(!user )
+  },[])
+
+  const setEnv = async (user, val) => {
+    if (val) {    
+      setCurrentUser(user);
+      axios.put(baseurl, { Authenticated: true, username: user }); // Send authenticated state
+      localStorage.setItem('username', user);
+    } else {
+      await axios.put(baseurl, { Authenticated: false, username: currentUser}); // Send unauthenticated state
+      localStorage.removeItem('username');
+      setCurrentUser('');
+      history('/login');
+    }
+  };
+
+  const login = async (currentUser, password) => {
 
     try {
-    const response = await  axios.get(`${baseurl}/` ,  
-    {params: { username: username }})
-    const user = JSON.parse(response.request.response)[0].name
-    console.log(user)
-      // if ( data[0] === username && data[1] === password ){
-    setCurrentUser(user)
-    localStorage.setItem('username' , user)
-    history('/dashboard')
-    return true
-    }
-    catch(err) {
+      const response = await  axios.get(`${baseurl}` , {params: { username: currentUser}})
+      const user = JSON.parse(response.request.response)[0].username
+      setIsAuthenthicated(true)
+      setEnv(currentUser,true)
+      history('/dashboard')
+    }catch(err) {
       console.log(err)
     }
   };
 
-  const signup = (username, password) => {
-    axios.post(`${baseurl}` ,  {username , password }).then((data)=>{
-      setCurrentUser(username) 
-      console.log("data posted successfully")
-    }).catch((err)=>{
-      console.log(err)
-    })
-    history('/dashboard'); 
+  const signup = async (username, password) => {
+
+    try {
+    const response = await axios.post(baseurl , {username , password}) ;
+    const user = JSON.parse(response.request.response)[0].username
+
+    setEnv(user,true)
+    
+    } catch(err){
+      console.error(err)
+    }
   };
 
   const logout = (currentUser) => {
-    setCurrentUser(null);
-    axios.put(`${baseurl}` , {currentUser})
-    history('/login');  
+    try{
+      setIsAuthenthicated(false)
+      setEnv(currentUser , false)
+    }catch(err){
+      console.log(err)
+    }
   };
 
   const getCurrentUser = () => {

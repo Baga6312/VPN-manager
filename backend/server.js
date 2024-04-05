@@ -20,6 +20,44 @@ const pool = mariadb.createPool({
 })
 
 
+app.put ('/api/user' , async(req ,res )=>{ 
+  const username = req.body.username ; 
+  const authenthicated = req.body.Authenticated
+  try { 
+
+    conn = await pool.getConnection(); 
+    await pool.query (`UPDATE users SET IS_CONNECTED = ? WHERE username = ? ; ` , [authenthicated , username]) 
+
+  }catch ( err ) { 
+
+    console.error(`error : ${err}`);
+  }finally { 
+  
+    (conn) ? conn.release() : null ; 
+
+  }
+})
+
+app.post('/api/user' , async(req , res) => { 
+  const username = req.body.username;
+  const password = req.body.password; 
+
+  try { 
+   res.json(rows)
+
+  }catch(err) { 
+
+   console.error('Error fetching dat: ',err);
+   res.status(500).send('Internal server Error')
+
+  }finally { 
+
+   (conn) ? conn.release() : null ; 
+
+  }
+
+})
+
 app.get('/api/user' , async (req , res)=>{
 
    const username = req.query.username ; 
@@ -28,7 +66,7 @@ app.get('/api/user' , async (req , res)=>{
 
    try { 
     conn = await pool.getConnection(); 
-    const rows = await pool.query (`SELECT * FROM etudiant WHERE name = ? ` , [username]) 
+    const rows = await pool.query (`SELECT * FROM users WHERE username = ? ` , [username]) 
     console.log(rows)
     res.json(rows)
 
@@ -42,7 +80,6 @@ app.get('/api/user' , async (req , res)=>{
     (conn) ? conn.release() : null ; 
 
    }
-
 })
 
 app.listen(PORT , ()=>{
