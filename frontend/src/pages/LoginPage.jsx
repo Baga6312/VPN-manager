@@ -16,7 +16,7 @@ const LoginPage = () => {
       auth.login(username, password);
       navigate('/dashboard'); 
     } catch (err) {
-      setError(`Invalid username or password `);
+      setError(`Invalid username or password ${err}`);
     }
   };
 

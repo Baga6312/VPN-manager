@@ -1,28 +1,33 @@
+import axios from 'axios'  ; 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 
 const authService = () => { 
 
-  const baseurl = "HTTP://localhost:3000/api/"
+  const baseurl = "http://localhost:5000/api/user"
   const [currentUser, setCurrentUser] = useState(null);
   const history = useNavigate();
 
-  const login = (username, password) => {
-    // change this shit with jwt  
-    axios.get(`${baseurl}user`).then((data )=>{
-      console.log(`user : ${data}`)
-      if ( data[0] === username && data[1] === password ){
-        setCurrentUser(data[0])
-        history('/dashboard')
-        return true 
-      }
-    }).catch((err)=>{
-      console.log(`error loging in : ${err}`)
-    })
+  const login = async (username, password) => {
+
+    try {
+    const response = await  axios.get(`${baseurl}/` ,  
+    {params: { username: username }})
+    const user = JSON.parse(response.request.response)[0].name
+    console.log(user)
+      // if ( data[0] === username && data[1] === password ){
+    setCurrentUser(user)
+    localStorage.setItem('username' , user)
+    history('/dashboard')
+    return true
+    }
+    catch(err) {
+      console.log(err)
+    }
   };
 
   const signup = (username, password) => {
-    axios.post(`${baseurl}user` ,  {username , password }).then((data)=>{
+    axios.post(`${baseurl}` ,  {username , password }).then((data)=>{
       setCurrentUser(username) 
       console.log("data posted successfully")
     }).catch((err)=>{
@@ -33,19 +38,12 @@ const authService = () => {
 
   const logout = (currentUser) => {
     setCurrentUser(null);
-    axios.put(`${baseurl}user` , {currentUser})
+    axios.put(`${baseurl}` , {currentUser})
     history('/login');  
   };
 
-  const  getCurrentUser = () => {
-    let user ;
-    axios.get(`${baseurl}user`).then((data)=>{
-      user = data ; 
-    }).catch((err)=>{
-      console.log(err)
-    })
-    console.log(user)
-    return JSON.parse(user);
+  const getCurrentUser = () => {
+    return localStorage.getItem("username") 
   };
 
   return {

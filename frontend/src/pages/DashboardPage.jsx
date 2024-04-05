@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
-import authService from '../services/authService';
+import  authService from '../services/authService';
 import { useHistory } from 'react-router-dom';
 
 const DashboardPage = () => {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
   const history = useHistory();
   const auth = authService()
 
   useEffect(() => {
-    // Fetch user data from authService
-    const user = auth.getCurrentUser();
+  const user = auth.getCurrentUser()
     if (!user) {
       history('/login'); // Redirect to login if user is not authenticated
     } else {
@@ -27,7 +26,7 @@ const DashboardPage = () => {
     <Container className="mt-4">
       <Row>
         <Col>
-          <h2>Welcome, {userData.username}</h2>
+          <h2>Welcome, {userData} </h2>
           <Button variant="danger" onClick={handleLogout}>Logout</Button>
         </Col>
       </Row>
