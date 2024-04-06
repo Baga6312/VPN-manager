@@ -43,7 +43,11 @@ app.post('/api/user' , async(req , res) => {
   const password = req.body.password; 
 
   try { 
-   res.json(rows)
+
+    conn = await pool.getConnection(); 
+    const rows =  await pool.query (` INSERT INTO users (username , password ) VALUES ('${username}' , '${password}'); ` , [username , password ]) 
+    
+    console.log(rows)
 
   }catch(err) { 
 
@@ -60,26 +64,26 @@ app.post('/api/user' , async(req , res) => {
 
 app.get('/api/user' , async (req , res)=>{
 
-   const username = req.query.username ; 
-   const password = req.body.password
-   let conn ; 
+  //  const username = req.query.username ; 
+  //  const password = req.body.password
+  //  let conn ; 
 
-   try { 
-    conn = await pool.getConnection(); 
-    const rows = await pool.query (`SELECT * FROM users WHERE username = ? ` , [username]) 
-    console.log(rows)
-    res.json(rows)
+  //  try { 
+  //   conn = await pool.getConnection(); 
+  //   const rows = await pool.query (`SELECT * FROM users WHERE username = ? ` , [username]) 
+  //   console.log(rows)
+  //   res.json(rows)
 
-   }catch(err) { 
+  //  }catch(err) { 
 
-    console.error('Error fetching dat: ',err);
-    res.status(500).send('Internal server Error')
+  //   console.error('Error fetching dat: ',err);
+  //   res.status(500).send('Internal server Error')
 
-   }finally { 
+  //  }finally { 
 
-    (conn) ? conn.release() : null ; 
+  //   (conn) ? conn.release() : null ; 
 
-   }
+  //  }
 })
 
 app.listen(PORT , ()=>{

@@ -20,6 +20,12 @@ const LoginPage = () => {
     }
   };
 
+  const handleRegister = (e) =>{
+    e.preventDefault(); 
+    navigate("/signup")
+  }
+  
+
   return (
     <Container className="mt-5">
       <Row>
@@ -38,6 +44,9 @@ const LoginPage = () => {
 
             <Button variant="primary" type="submit">
               Login
+            </Button>
+            <Button variant="primary" type="button" onClick={(e)=>{handleRegister(e)}} >
+              Register
             </Button>
 
             {error && <p className="text-danger mt-2">{error}</p>}

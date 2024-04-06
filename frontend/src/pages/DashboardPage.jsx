@@ -36,16 +36,7 @@ const DashboardPage = () => {
           <Card>
             <Card.Body>
               <h4>VPN Connection Status</h4>
-              {/* Display VPN connection status */}
               {/* Connect/Disconnect Button */}
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card>
-            <Card.Body>
-              <h4>Server Selection</h4>
-              {/* Dropdown Menu for server selection */}
             </Card.Body>
           </Card>
         </Col>
@@ -59,24 +50,8 @@ const DashboardPage = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col>
-          <Card>
-            <Card.Body>
-              <h4>Connection Logs</h4>
-              {/* Log Entries */}
-            </Card.Body>
-          </Card>
-        </Col>
       </Row>
       <Row className="mt-4">
-        <Col>
-          <Card>
-            <Card.Body>
-              <h4>Account Information</h4>
-              {/* Username, Email, Subscription Plan */}
-            </Card.Body>
-          </Card>
-        </Col>
         <Col>
           <Card>
             <Card.Body>

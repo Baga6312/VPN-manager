@@ -10,7 +10,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const auth = authService()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     try {
       auth.signup(username, password);
@@ -20,6 +20,12 @@ const SignupPage = () => {
     }
   };
 
+  const handleLogin = (e) =>{
+    e.preventDefault()
+    navigate("/login")
+  }
+
+  
   return (
     <Container className="mt-5">
       <Row>
@@ -36,8 +42,17 @@ const SignupPage = () => {
               <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </Form.Group>
 
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </Form.Group>
+
+
             <Button variant="primary" type="submit">
               Sign Up
+            </Button>
+            <Button variant="primary" type="button" onClick={(e)=>{handleLogin(e)}} >
+              Login
             </Button>
 
             {error && <p className="text-danger mt-2">{error}</p>}

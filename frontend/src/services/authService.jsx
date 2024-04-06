@@ -9,6 +9,7 @@ const authService = () => {
   const baseurl = "http://localhost:5000/api/user/"
   const [currentUser, setCurrentUser] = useState(``);
   const [IsAuthenthicated,setIsAuthenthicated] = useState(false)
+  const [err, setError] = useState(false)
   const history = useNavigate();
 
 
@@ -25,32 +26,35 @@ const authService = () => {
       localStorage.setItem('username', user);
     } else {
       await axios.put(baseurl, { Authenticated: false, username: currentUser}); // Send unauthenticated state
-      localStorage.removeItem('username');
       setCurrentUser('');
-      history('/login');
     }
   };
 
   const login = async (currentUser, password) => {
-
-    try {
-      const response = await  axios.get(`${baseurl}` , {params: { username: currentUser}})
-      const user = JSON.parse(response.request.response)[0].username
-      setIsAuthenthicated(true)
-      setEnv(currentUser,true)
-      history('/dashboard')
-    }catch(err) {
-      console.log(err)
-    }
+    // try {
+    //   const response = await  axios.get(`${baseurl}` , {params: { username: currentUser}})
+    //   const user = JSON.parse(response.request.response)[0].username
+    //   if (user === currentUser ) {  
+    //     setIsAuthenthicated(true)
+    //     setEnv(currentUser,true)
+    //     history('/dashboard')
+    //   }else { 
+    //     setError(fasle)
+    //   }
+    // }catch(err) {
+    //   console.log(err)
+    // }
   };
 
   const signup = async (username, password) => {
 
     try {
+
     const response = await axios.post(baseurl , {username , password}) ;
     const user = JSON.parse(response.request.response)[0].username
 
     setEnv(user,true)
+    history('/dashboard')
     
     } catch(err){
       console.error(err)
@@ -61,6 +65,8 @@ const authService = () => {
     try{
       setIsAuthenthicated(false)
       setEnv(currentUser , false)
+      localStorage.removeItem("username")
+      history('/login');
     }catch(err){
       console.log(err)
     }
@@ -76,6 +82,7 @@ const authService = () => {
     signup,
     getCurrentUser,
     currentUser, 
+    err, 
   };
 }
 
