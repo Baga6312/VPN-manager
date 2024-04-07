@@ -7,6 +7,7 @@ const authService = () => {
 
   const baseurl = "http://localhost:5000/api"
   const [err, setError] = useState('')
+  const [data , setData ] = useState({})
   const history = useNavigate();
 
   const login = async (username, password) => {
@@ -17,9 +18,11 @@ const authService = () => {
       const headers = { authorization: `Bearer ${token}` };
   
       const response2 = await axios.get(`${baseurl}/user`, { headers });
-      
+      localStorage.setItem("username",response2.data.message[0].username)
+      localStorage.setItem("question",response2.data.message[0].supportAndHelp)
+      localStorage.setItem("connection",response2.data.message[0].isConnected)
+
       if (response2.data.message === 'invalid token'){
-        localStorage.clear()
         setError("invalid username or password")
       }else{ 
         history('/dashboard')
@@ -35,12 +38,11 @@ const authService = () => {
   const signup = async (username, password) => {
 
     const response = await axios.post(`${baseurl}/register` , {username : username , password : password }) 
-    const userdata = response.data.message 
-    console.log(userdata)
-    if (userdata) {
+    const data = response.data.message 
+    if (data) {
       setError('error signing up , try again later')
     }else { 
-      setData(userdata)
+      setData(data)
     }
   
   };
@@ -54,16 +56,20 @@ const authService = () => {
     }
   };
 
-  const getCurrentUser = () => {
-    return localStorage.getItem("username") 
+  const getCurrentData = () => {
+    return  [
+      localStorage.getItem("username") , 
+      localStorage.getItem("connection") , 
+      localStorage.getItem("question") , 
+    ]
   };
+
 
   return {
     login,
     logout,
-    getCurrentUser,
+    getCurrentData  ,
     signup,
-    getCurrentUser,
     err, 
   };
 }

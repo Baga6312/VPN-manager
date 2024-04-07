@@ -37,9 +37,9 @@ const authenticate = (req, res ,next ) =>{
 app.get('/api/user' , authenticate , async (req,res)=>{
 
   const username = req.user.name; 
-
+  const password = req.user.pass
   try {
-  const object = await pool.query('SELECT * FROM users WHERE username = ?' , [username])
+  const object = await pool.query('SELECT * FROM users WHERE username = ? AND password = ? ' , [username , password])
     
   if (object.length > 0 )
     {res.json({message : object })}

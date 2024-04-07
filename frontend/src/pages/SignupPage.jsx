@@ -21,6 +21,7 @@ const SignupPage = () => {
         setError('check password ')
       }else if (username && password === confirmedPassword ){
         localStorage.setItem("username" , username)
+        localStorage.setItem("question" , null)
         await auth.signup(username, password);
         navigate('/dashboard'); // Redirect to dashboard after successful signup
       }

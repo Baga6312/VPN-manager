@@ -12,12 +12,13 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
 
+
+
     e.preventDefault();
     if (!username && !password) {
       setError('Username and password are required');
     }else{
       await auth.login(username, password)
-      localStorage.setItem('username' , username) 
       setError('invalid username or password')
     }
   }
