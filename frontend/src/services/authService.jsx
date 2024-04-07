@@ -3,69 +3,51 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-
 const authService = () => { 
 
-  const baseurl = "http://localhost:5000/api/user/"
-  const [currentUser, setCurrentUser] = useState(``);
-  const [IsAuthenthicated,setIsAuthenthicated] = useState(false)
-  const [err, setError] = useState(false)
+  const baseurl = "http://localhost:5000/api"
+  const [err, setError] = useState('')
   const history = useNavigate();
 
+  const login = async (username, password) => {
+    try {
 
-  useEffect(() => {
-    const user = localStorage.getItem('username');
-    setCurrentUser(user || ''); 
-    setIsAuthenthicated(!user )
-  },[])
-
-  const setEnv = async (user, val) => {
-    if (val) {    
-      setCurrentUser(user);
-      axios.put(baseurl, { Authenticated: true, username: user }); // Send authenticated state
-      localStorage.setItem('username', user);
-    } else {
-      await axios.put(baseurl, { Authenticated: false, username: currentUser}); // Send unauthenticated state
-      setCurrentUser('');
+      const response = await axios.post(`${baseurl}/user`, { username, password });
+      const token = response.data.accessToken;
+      const headers = { authorization: `Bearer ${token}` };
+  
+      const response2 = await axios.get(`${baseurl}/user`, { headers });
+      
+      if (response2.data.message === 'invalid token'){
+        localStorage.clear()
+        setError("invalid username or password")
+      }else{ 
+        history('/dashboard')
+      }
+      
+    } catch (error) {
+      console.error('Error during authentication:', error);
+      setError('An error occurred. Please try again later.');
     }
   };
-
-  const login = async (currentUser, password) => {
-    // try {
-    //   const response = await  axios.get(`${baseurl}` , {params: { username: currentUser}})
-    //   const user = JSON.parse(response.request.response)[0].username
-    //   if (user === currentUser ) {  
-    //     setIsAuthenthicated(true)
-    //     setEnv(currentUser,true)
-    //     history('/dashboard')
-    //   }else { 
-    //     setError(fasle)
-    //   }
-    // }catch(err) {
-    //   console.log(err)
-    // }
-  };
+  
 
   const signup = async (username, password) => {
 
-    try {
-
-    const response = await axios.post(baseurl , {username , password}) ;
-    const user = JSON.parse(response.request.response)[0].username
-
-    setEnv(user,true)
-    history('/dashboard')
-    
-    } catch(err){
-      console.error(err)
+    const response = await axios.post(`${baseurl}/register` , {username : username , password : password }) 
+    const userdata = response.data.message 
+    console.log(userdata)
+    if (userdata) {
+      setError('error signing up , try again later')
+    }else { 
+      setData(userdata)
     }
+  
   };
 
-  const logout = (currentUser) => {
+  const logout = () => {
     try{
-      setIsAuthenthicated(false)
-      setEnv(currentUser , false)
-      localStorage.removeItem("username")
+      localStorage.clear()
       history('/login');
     }catch(err){
       console.log(err)
@@ -79,9 +61,9 @@ const authService = () => {
   return {
     login,
     logout,
+    getCurrentUser,
     signup,
     getCurrentUser,
-    currentUser, 
     err, 
   };
 }

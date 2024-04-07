@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import authService from '../services/authService';
 import { useNavigate } from 'react-router-dom';
@@ -10,21 +10,25 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const auth = authService()
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    try {
-      auth.login(username, password);
-      navigate('/dashboard'); 
-    } catch (err) {
-      setError(`Invalid username or password ${err}`);
-    }
-  };
+  const handleSubmit = async (e) => {
 
-  const handleRegister = (e) =>{
-    e.preventDefault(); 
+    e.preventDefault();
+    if (!username && !password) {
+      setError('Username and password are required');
+    }else{
+      await auth.login(username, password)
+      localStorage.setItem('username' , username) 
+      setError('invalid username or password')
+    }
+  }
+
+
+
+  const handleRegister = (e) => {
+    e.preventDefault();
     navigate("/signup")
   }
-  
+
 
   return (
     <Container className="mt-5">
@@ -45,7 +49,7 @@ const LoginPage = () => {
             <Button variant="primary" type="submit">
               Login
             </Button>
-            <Button variant="primary" type="button" onClick={(e)=>{handleRegister(e)}} >
+            <Button variant="primary" type="button" onClick={(e) => { handleRegister(e) }} >
               Register
             </Button>
 

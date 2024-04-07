@@ -2,6 +2,7 @@ require("dotenv").config()
 const express = require('express');
 const cors = require("cors"); 
 const app = express()
+const jwt = require("jsonwebtoken")
 const PORT = process.env.PORT || 5000;
 const mariadb = require('mariadb')
 
@@ -19,71 +20,54 @@ const pool = mariadb.createPool({
   connectionLimit : 5 
 })
 
-
-app.put ('/api/user' , async(req ,res )=>{ 
-  const username = req.body.username ; 
-  const authenthicated = req.body.Authenticated
-  try { 
-
-    conn = await pool.getConnection(); 
-    await pool.query (`UPDATE users SET IS_CONNECTED = ? WHERE username = ? ; ` , [authenthicated , username]) 
-
-  }catch ( err ) { 
-
-    console.error(`error : ${err}`);
-  }finally { 
+const authenticate = (req, res ,next ) =>{
+  const authHeader = req.headers['authorization']
+  const token =authHeader &&  authHeader.split(' ')[1]
   
-    (conn) ? conn.release() : null ; 
+  if (token == null ) return res.sendStatus(401)
 
+  jwt.verify(token , process.env.ACCESS_TOKEN_SECRET , (err , data )=>{
+    if (err) return res.sendStatus(403)
+    
+    req.user = data
+    next()
+  })
+}
+
+app.get('/api/user' , authenticate , async (req,res)=>{
+
+  const username = req.user.name; 
+
+  try {
+  const object = await pool.query('SELECT * FROM users WHERE username = ?' , [username])
+    
+  if (object.length > 0 )
+    {res.json({message : object })}
+  else 
+    {res.json({message : "invalid token"})}
+
+  }catch (err) { 
+    res.json({error : "server error "})
   }
-})
+} )
 
-app.post('/api/user' , async(req , res) => { 
-  const username = req.body.username;
+app.post('/api/register' , async(req ,res )=> { 
+  const username = req.body.username ; 
   const password = req.body.password; 
 
-  try { 
-
-    conn = await pool.getConnection(); 
-    const rows =  await pool.query (` INSERT INTO users (username , password ) VALUES ('${username}' , '${password}'); ` , [username , password ]) 
-    
-    console.log(rows)
-
-  }catch(err) { 
-
-   console.error('Error fetching dat: ',err);
-   res.status(500).send('Internal server Error')
-
-  }finally { 
-
-   (conn) ? conn.release() : null ; 
-
-  }
+  const response = await pool.query(`INSERT INTO users (username , password, isConnected , age) VALUES ('${username}' , '${password}'  , ${false} , ${Math.floor(Math.random() * 50)})`) 
+  res.json({message : 'success'})
 
 })
 
-app.get('/api/user' , async (req , res)=>{
+app.post('/api/user' , (req , res ) => { 
+  const username = req.body.username
+  const password = req.body.password
 
-  //  const username = req.query.username ; 
-  //  const password = req.body.password
-  //  let conn ; 
+  const user = {name : username , pass : password}
 
-  //  try { 
-  //   conn = await pool.getConnection(); 
-  //   const rows = await pool.query (`SELECT * FROM users WHERE username = ? ` , [username]) 
-  //   console.log(rows)
-  //   res.json(rows)
-
-  //  }catch(err) { 
-
-  //   console.error('Error fetching dat: ',err);
-  //   res.status(500).send('Internal server Error')
-
-  //  }finally { 
-
-  //   (conn) ? conn.release() : null ; 
-
-  //  }
+  const accessToken = jwt.sign(user , process.env.ACCESS_TOKEN_SECRET ) 
+  res.json({accessToken : accessToken})
 })
 
 app.listen(PORT , ()=>{
@@ -93,3 +77,4 @@ app.listen(PORT , ()=>{
     console.error(`Error ${err}`)
   }
 })
+

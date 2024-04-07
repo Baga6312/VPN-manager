@@ -6,15 +6,25 @@ import { useNavigate } from 'react-router-dom';
 const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmedPassword, setConfirmedPassword ] = useState('')
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const auth = authService()
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
+    
     try {
-      auth.signup(username, password);
-      navigate('/dashboard'); // Redirect to dashboard after successful signup
+      if (!username || !password || !confirmedPassword ){
+        setError('all fields must be set ')
+      }else if (password !== confirmedPassword ){
+        setError('check password ')
+      }else if (username && password === confirmedPassword ){
+        localStorage.setItem("username" , username)
+        await auth.signup(username, password);
+        navigate('/dashboard'); // Redirect to dashboard after successful signup
+      }
+
     } catch (error) {
       setError(`Error signing up. Please try again. ${error }`);
     }
@@ -44,11 +54,11 @@ const SignupPage = () => {
 
             <Form.Group controlId="formBasicPassword">
               <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <Form.Control type="password" placeholder="Enter password" value={confirmedPassword} onChange={(e) => setConfirmedPassword(e.target.value)} />
             </Form.Group>
 
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="button" onClick={(e)=>{handleSubmit(e)}}>
               Sign Up
             </Button>
             <Button variant="primary" type="button" onClick={(e)=>{handleLogin(e)}} >
