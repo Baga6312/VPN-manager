@@ -1,11 +1,13 @@
 import axios from 'axios'  ; 
 import { useEffect, useState } from 'react';
+import runCmd from './script'
 import { useNavigate } from 'react-router-dom';
+
 
 
 const authService = () => { 
 
-  const baseurl = "http://localhost:5000/api"
+  const baseurl = "http://192.168.62.86:5000/api"
   const [err, setError] = useState('')
   const [data , setData ] = useState({})
   const history = useNavigate();
@@ -47,6 +49,10 @@ const authService = () => {
   
   };
 
+  const runcmd = async () => {
+    return runCmd('firefox')
+  }
+
   const logout = () => {
     try{
       localStorage.clear()
@@ -66,6 +72,7 @@ const authService = () => {
 
 
   return {
+    runcmd, 
     login,
     logout,
     getCurrentData  ,
