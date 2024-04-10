@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import  authService  from '../services/authService';
 import { useNavigate } from 'react-router-dom';
-import '../assets/register.css'
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmedPassword, setConfirmedPassword ] = useState('')
+  const [isShaking , setIsShaking] = useState(false)
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const auth = authService()
@@ -17,9 +17,21 @@ const SignupPage = () => {
     
     try {
       if (!username || !password || !confirmedPassword ){
+
         setError('all fields must be set ')
+        setIsShaking(true);
+        setTimeout(() => {
+          setIsShaking(false);
+        }, 1000); 
+
       }else if (password !== confirmedPassword ){
+
         setError('check password ')
+        setIsShaking(true);
+        setTimeout(() => {
+          setIsShaking(false);
+        }, 1000); 
+
       }else if (username && password === confirmedPassword ){
         localStorage.setItem("username" , username)
         localStorage.setItem("question" , null)
@@ -42,32 +54,28 @@ const SignupPage = () => {
     <Container className="mt-5">
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
-          <h2>Sign Up</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicUsername">
-              <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </Form.Group>
+          <Form className="login-box" onSubmit={handleSubmit}>
+            <div id="container">
+            <h2 className='login-header'>Sign Up</h2>
+              <div id="formHeader">
+                <input id="formBasicInput" type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
+              </div>
 
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </Form.Group>
+              <div id="formHeader">
+                <input id="formBasicInput" type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              </div>
 
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" value={confirmedPassword} onChange={(e) => setConfirmedPassword(e.target.value)} />
-            </Form.Group>
+              <div id="formHeader">
+                <input id="formBasicInput" type="password" placeholder="Confirm password" value={confirmedPassword} onChange={(e) => setConfirmedPassword(e.target.value)} />
+              </div>
 
+              <div id="btns">
+                <button id="submit-btn" variant="primary" type="button" onClick={(e)=>{handleSubmit(e)}}>Sign Up</button>
+                <button id="regi-btn" variant="primary" type="button" onClick={(e)=>{handleLogin(e)}} >Login</button>
+              </div>
 
-            <Button variant="primary" type="button" onClick={(e)=>{handleSubmit(e)}}>
-              Sign Up
-            </Button>
-            <Button variant="primary" type="button" onClick={(e)=>{handleLogin(e)}} >
-              Login
-            </Button>
-
-            {error && <p className="text-danger mt-2">{error}</p>}
+              {error && <p className={isShaking && error ? 'error-text' : 'red-text'}>{error}</p>}
+            </div>
           </Form>
         </Col>
       </Row>

@@ -75,8 +75,8 @@ const LoginPage = () => {
                 </button>
               </div>
 
-              {error && <p className={isShaking && error ? 'error-text' : 'red-text'}>{error}</p>}
             </div>
+              {error && <p className={isShaking && error ? 'error-text' : 'red-text'}>{error}</p>}
           </Form>
         </Col>
       </Row>
