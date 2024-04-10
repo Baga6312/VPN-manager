@@ -26,7 +26,6 @@ const DashboardPage = () => {
   }
 
    const handleChange = () => {
-    auth.runcmd()
     setIsChecked(!isChecked); // Toggles the checked state
   };
   const handleLogout = () => {

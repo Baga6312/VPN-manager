@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import authService from '../services/authService';
 import { useNavigate } from 'react-router-dom';
+import '../assets/login.css'
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -35,26 +36,26 @@ const LoginPage = () => {
     <Container className="mt-5">
       <Row>
         <Col md={{ span: 6, offset: 3 }}>
-          <h2>Login</h2>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicUsername">
-              <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
-            </Form.Group>
+          <Form className='login-box' onSubmit={handleSubmit}>
+          <h2 className='login-header'>Login</h2>
+            <div id="formHeader">
+              <p>Username</p>
+              <input id="formBasicInput" type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </div>
 
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            </Form.Group>
+            <div id="formHeader">
+              <p>Password</p>
+              <input id="formBasicInput" type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </div>
 
-            <Button variant="primary" type="submit">
+            <Button id="submit-btn" variant="primary" type="submit">
               Login
             </Button>
-            <Button variant="primary" type="button" onClick={(e) => { handleRegister(e) }} >
+            <Button id="regi-btn" variant="primary" type="button" onClick={(e) => { handleRegister(e) }} >
               Register
             </Button>
 
-            {error && <p className="text-danger mt-2">{error}</p>}
+            {error && <p id="error-text" className="text-danger mt-2">{error}</p>}
           </Form>
         </Col>
       </Row>
