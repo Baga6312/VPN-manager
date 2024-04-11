@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import  authService from '../services/authService';
 import QuestForm from '../components/questForm'
 import { useNavigate} from 'react-router-dom';
+import '../assets/dashboard.css'
 
 const DashboardPage = () => {
   const [userData, setUserData] = useState([]);
@@ -35,72 +36,21 @@ const DashboardPage = () => {
 
   return (
     <Container className="mt-4">
-      <Row>
-        <Col>
-          <h2>Welcome, {userData[0]} </h2>
-          
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
-          <Card>
-            <Card.Body>
-              <ul>
-                <li><h4>VPN Connection Status</h4></li>
-                <li>{ userData[1] == 0  ?  <input type='checkbox' checked={isChecked} onChange={handleChange} />  : <input type='checkbox' checked={isChecked} onChange={handleChange}/> }</li>
-              </ul>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
-          <Card>
-            <Card.Body>
-              <ul>
-                <li><h4>Data Usage</h4></li>
-              </ul>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
-          <Card>
-            <Card.Body>
-              <ul>
-                <li><h4>Settings</h4></li>
-              </ul>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row className="mt-4">
-        <Col>
-          <Card>
-            <Card.Body>
-              <ul>
-                <li><h4>your recent question </h4></li>
-                <li>{userData[2] === "null" ? <p> no fking question </p>: userData[2]}</li>
-                <li><Button  onClick={submitQuest}>add Question</Button>
-                    {showComponent && <QuestForm/> }
-                </li>
-              </ul>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Card>
-            <Card.Body>
-              <br/>
-                <Button variant="danger" onClick={handleLogout}>Logout</Button>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
+      <h2 id="header">Welcome, {userData[0]} </h2>
+          <ul id="vpn-status">
+              <li><h4>VPN Connection Status</h4></li>
+              <li>{userData[1] ==0 ? <label class="switch"><input type="checkbox" /><span class="slider"></span></label> : <label class="switch"><input type="checkbox"/><span class="slider"></span></label>}</li>
+          </ul>
+          {/* <ul>
+              <li><h4>Settings</h4></li>
+          </ul> */}
+          <ul id="question">
+            <li><h4>your recent question </h4></li>
+            <li>{userData[2] === "null" ? <p>no fking question </p>: userData[2]}</li>
+            <li><button id="button-1" onClick={submitQuest}>add Question</button>{showComponent && <QuestForm/> }</li>
+          </ul>
+          <button id="button" variant="danger" onClick={handleLogout}>Logout</button>
+          <br/>
     </Container>
   );
 };
