@@ -11,6 +11,12 @@ const authService = () => {
   const [data , setData ] = useState({})
   const history = useNavigate();
 
+  const getInfo = async () => { 
+    const response  = await axios.get(`${baseurl}/getinfo`)
+    localStorage.setItem('info' , response.data["message"])
+  }
+
+
   const login = async (username, password) => {
     try {
 
@@ -63,6 +69,7 @@ const authService = () => {
       localStorage.getItem("username") , 
       localStorage.getItem("connection") , 
       localStorage.getItem("question") , 
+      localStorage.getItem("info") , 
     ]
   };
 
@@ -72,6 +79,7 @@ const authService = () => {
 
 
   return {
+    getInfo , 
     login,
     logout,
     getCurrentData  ,

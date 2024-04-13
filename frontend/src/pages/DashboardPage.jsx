@@ -5,19 +5,23 @@ import QuestForm from '../components/questForm'
 import { useNavigate} from 'react-router-dom';
 import '../assets/dashboard.css'
 
-const DashboardPage = () => {
+const DashboardPage =() => {
   const [userData, setUserData] = useState([]);
   const [showComponent , setShowComponenet ] = useState(false)
   const [isChecked, setIsChecked] = useState(false);
+  const [info , setInfo] = useState('')
   const history = useNavigate();
   const auth = authService()
+  
 
   useEffect(() => {
        const user = auth.getCurrentData()
+        auth.getInfo()
+
        if (!user) {
          history('/login'); // Redirect to login if user is not authenticated
        } else {
-          setUserData(user)
+          setUserData(user) 
        }
      }, [history]
   );
@@ -38,8 +42,9 @@ const DashboardPage = () => {
     <Container className="mt-4">
       <h2 id="header">Welcome, {userData[0]} </h2>
           <ul id="vpn-status">
-              <li><h4>VPN Connection Status</h4></li>
-              <li>{userData[1] ==0 ? <label class="switch"><input type="checkbox" /><span class="slider"></span></label> : <label class="switch"><input type="checkbox"/><span class="slider"></span></label>}</li>
+              <li><h4>VPN Connection Status </h4></li>
+              <li>{userData[1] ==0 ? <label className="switch"><input type="checkbox" /><span className="slider"></span></label> : <label className="switch"><input type="checkbox"/><span className="slider"></span></label>}</li>
+              <li> { userData[3] == 0 ? <p>no user info </p> : userData[3]}</li>
           </ul>
           {/* <ul>
               <li><h4>Settings</h4></li>

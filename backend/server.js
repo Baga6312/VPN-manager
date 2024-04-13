@@ -5,7 +5,8 @@ const app = express()
 const jwt = require("jsonwebtoken")
 const PORT = process.env.PORT || 5000;
 const mariadb = require('mariadb')
-const { exec } = require("child_process") 
+const { exec } = require("child_process"); 
+const { stderr } = require("process");
 
 
 app.use(cors())
@@ -20,6 +21,25 @@ const pool = mariadb.createPool({
   database : 'testing' , 
   connectionLimit : 5 
 })
+
+
+app.get('/api/getinfo' , (req , res )=> { 
+  const info = req.body ; 
+
+  const command= exec ('echo $USER' , (stderr , stdout , err )=> { 
+    if (stderr ){ 
+      console.log(stderr)
+    }
+    if (stdout) { 
+      console.log(stdout )
+    }
+    if (err) { 
+      console.log(err )
+    }
+    res.send({message : stdout})
+  })
+
+}) 
 
 
 const authenticate = (req, res ,next ) =>{
