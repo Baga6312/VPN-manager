@@ -2,11 +2,9 @@ import axios from 'axios'  ;
 import {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
-
 const authService = () => { 
 
-  const baseurl = "http://localhost:5000/api"
+  const baseurl = "http://192.168.100.253:5000/api"
   const [err, setError] = useState('')
   const [data , setData ] = useState({})
   const history = useNavigate();
