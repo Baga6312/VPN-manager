@@ -16,7 +16,7 @@ const DashboardPage =() => {
 
   useEffect(() => {
        const user = auth.getCurrentData()
-        auth.getInfo()
+        auth.getinfo()
 
        if (!user) {
          history('/login'); // Redirect to login if user is not authenticated

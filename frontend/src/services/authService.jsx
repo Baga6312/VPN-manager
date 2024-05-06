@@ -4,15 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 const authService = () => { 
 
-  const baseurl = "http://192.168.100.253:5000/api"
+  const baseurl = "http://localhost:5000/api"
   const [err, setError] = useState('')
   const [data , setData ] = useState({})
   const history = useNavigate();
 
-  const getInfo = async () => { 
-    const response  = await axios.get(`${baseurl}/getinfo`)
-    localStorage.setItem('info' , response.data["message"])
-  }
 
 
   const login = async (username, password) => {
@@ -71,13 +67,17 @@ const authService = () => {
     ]
   };
 
+  const getinfo = async() => { 
 
+    const response = await axios.get(`${baseurl}/getinfo`);
+    console.log(response.data.message)
+  }
 
 
 
 
   return {
-    getInfo , 
+    getinfo , 
     login,
     logout,
     getCurrentData  ,

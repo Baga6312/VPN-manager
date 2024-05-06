@@ -4,9 +4,16 @@ const cors = require("cors");
 const app = express()
 const jwt = require("jsonwebtoken")
 const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT , ()=>{
+  try {
+    console.log(`server is listening on port ${PORT}`)
+  }catch (err) { 
+    console.error(`Error ${err}`)
+  }
+})
 const mariadb = require('mariadb')
-const { exec } = require("child_process"); 
-const { stderr } = require("process");
+const { spawn } = require("child_process"); 
+const io = require("socket.io")(server)
 
 
 app.use(cors())
@@ -21,25 +28,6 @@ const pool = mariadb.createPool({
   database : 'testing' , 
   connectionLimit : 5 
 })
-
-
-app.get('/api/getinfo' , (req , res )=> { 
-  const info = req.body ; 
-
-  const command= exec ('echo $USER' , (stderr , stdout , err )=> { 
-    if (stderr ){ 
-      console.log(stderr)
-    }
-    if (stdout) { 
-      console.log(stdout )
-    }
-    if (err) { 
-      console.log(err )
-    }
-    res.send({message : stdout})
-  })
-
-}) 
 
 
 const authenticate = (req, res ,next ) =>{
@@ -57,6 +45,16 @@ const authenticate = (req, res ,next ) =>{
 }
 
 // server.js
+
+app.get('/api/getinfo', async (req, res) => {
+  const child = spawn("bash", ["print.sh"]);
+  child.stdout.on('data', (data) => {
+  io.on("connection" , (socket) => { 
+    socket.emit(data)
+    })
+  });
+});
+
 
 app.get('/api/user' , authenticate , async (req,res)=>{
 
@@ -94,11 +92,4 @@ app.post('/api/user' , (req , res ) => {
   res.json({accessToken : accessToken})
 })
 
-app.listen(PORT , ()=>{
-  try {
-    console.log(`server is listening on port ${PORT}`)
-  }catch (err) { 
-    console.error(`Error ${err}`)
-  }
-})
 
