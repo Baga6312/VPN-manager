@@ -47,12 +47,25 @@ const authenticate = (req, res ,next ) =>{
 // server.js
 
 app.get('/api/getinfo', async (req, res) => {
-  const child = spawn("bash", ["print.sh"]);
-  child.stdout.on('data', (data) => {
-  io.on("connection" , (socket) => { 
-    socket.emit(data)
-    })
-  });
+  const intervalId = setInterval(() => {
+    const child = spawn("sudo", ["wg"]);
+
+    child.stdout.on('data', (data) => {
+      const info = data.toString().split(' ');
+      for (let i = 0; i < info.length; i++) {
+        if (info[i] === "transfer:") {
+          console.log(info[i] + " " + info[i + 1] + " " + info[i + 2]);
+        }
+        if (info[i] === "received,") {
+          console.log(info[i] + " " + info[i + 1] + " " + info[i + 2]);
+        }
+      }
+    });
+
+  }, 1000); 
+  setTimeout(() => {
+    clearInterval(intervalId);
+  }, 60000); 
 });
 
 
