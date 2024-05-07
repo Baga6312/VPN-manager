@@ -1,9 +1,10 @@
 import axios from 'axios'  ; 
 import {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import io from 'socket.io-client'
 
 const authService = () => { 
-
+  const socket = io.connect("http://localhost:5000/")
   const baseurl = "http://localhost:5000/api"
   const [err, setError] = useState('')
   const [data , setData ] = useState({})
@@ -67,17 +68,7 @@ const authService = () => {
     ]
   };
 
-  const getinfo = async() => { 
-
-    const response = await axios.get(`${baseurl}/getinfo`);
-    console.log(response.data.message)
-  }
-
-
-
-
   return {
-    getinfo , 
     login,
     logout,
     getCurrentData  ,
