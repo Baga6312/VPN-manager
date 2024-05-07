@@ -11,15 +11,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 const http = require('http'); 
-const { Server } = require("socket.io")
-const server = http.createServer(app)
-
-const io = new Server(server,{
-  cors : {
-    origin: "http://localhost:5173" , 
-    methods: ["GET" , "POST"], 
-  },
-})
+const WebSocket = require("ws")
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 const pool = mariadb.createPool({
   host : 'localhost' , 
@@ -46,29 +40,24 @@ const authenticate = (req, res ,next ) =>{
 
 // server.js
 
-app.get('/api/getinfo', async (req, res) => {
-  const intervalId = setInterval(() => {
-    const child = spawn("sudo", ["wg"]);
+app.get('/api/getinfo' ,async (req , res )=> { 
+  const intervalId = setInterval(()=> { 
+  const child = spawn("sudo", ["wg"]);
 
-    child.stdout.on('data', (data) => {
-      const info = data.toString().split(' ');
-      for (let i = 0; i < info.length; i++) {
-        if (info[i] === "transfer:") {
-          console.log(info[i] + " " + info[i + 1] + " " + info[i + 2] +" "+ info[i + 3] +" "+ info [ i + 4]+" "+info[i+5]);
-          io.on("connection" , (socket)=> {
-            const data = info[i] + " " + info[i + 1] + " " + info[i + 2] +" "+ info[i + 3] +" "+ info [ i + 4]+" "+info[i+5] 
-            socket.emit("data_cast" , (data))
+  child.stdout.on('data', (data) => {
+    const info = data.toString().split(' ');
+    for (let i = 0; i < info.length; i++) {
+      if (info[i] === "transfer:") {
+        const data = info[i] + " " + info[i + 1] + " " + info[i + 2] +" "+ info[i + 3] +" "+ info [ i + 4]+" "+info[i+5]
+        console.log(data)
+          wss.on('connection'  , (ws)=> { 
+            ws.send(JSON.stringify(data))
           })
         }
       }
-    });
-
-  }, 1000); 
-  setTimeout(() => {
-    clearInterval(intervalId);
-  }, 60000); 
-});
-
+    },1000)
+  })
+})
 
 app.get('/api/user' , authenticate , async (req,res)=>{
 
