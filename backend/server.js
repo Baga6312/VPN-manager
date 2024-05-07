@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 const http = require('http'); 
-const { Server } = require("socket.io") 
+const { Server } = require("socket.io")
 const server = http.createServer(app)
 
 const io = new Server(server,{

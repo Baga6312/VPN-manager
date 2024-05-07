@@ -1,30 +1,28 @@
+
 .mt-4 { 
-    background-color:#dfdfdf;
-    display: grid ;
-    justify-content:first baseline;
+    background-color:#dfdfdf; 
+    display: grid;
+    justify-content: center;
     color : #222 ;
-    min-height: 100vh ;
+    margin : 0 auto ;
+    height: 100vh   ;
 }
 
 #header { 
     display : flex ; 
-    padding-left: 52px;
-    justify-content: start ;
+    margin-left: 30px ;
+    justify-content:center;
     align-items: center;
 }
 
 #button { 
+    margin-right: -150px ;
     color : #222 ; 
     background:  #222;
 }
 
-
-#vpn-status { 
-    margin-bottom : -150px ; 
-}
-
 ul {  
-    display: flex;
+    display: flex ; 
     align-items: center;
     list-style: none;
 }
@@ -127,3 +125,25 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 } 
+
+.active-circle { 
+  background-color: gray ; 
+  border-radius: 50px ;
+  color : gray ; 
+}
+
+.inactive-circle { 
+  background-color: green ; 
+  color : green ; 
+  border-radius: 50px ;
+}
+
+#status { 
+  margin-top: -50px;
+}
+
+
+#logout {
+  padding-left:  250px ; 
+  margin: -150px ;
+}

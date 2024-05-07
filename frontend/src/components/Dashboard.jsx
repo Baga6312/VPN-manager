@@ -1,4 +1,4 @@
-import DashboardPage from '../pages/DashboardPage';
+import DashboardPage from '../pages/DashboardPage.jsx'
 
 const Dashboard = () => {
   return (
