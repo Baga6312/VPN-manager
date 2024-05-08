@@ -10,7 +10,7 @@ const QRCodeScanPage = () => {
       width : 100 , 
       height : 100  
     }, 
-    fps : 5 , 
+    fps : 3 , 
     })
     scanner.render((result )=>{ 
       scanner.clear() 
