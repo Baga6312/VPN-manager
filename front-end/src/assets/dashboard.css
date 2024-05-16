@@ -1,11 +1,11 @@
-
 .mt-4 { 
     background-color:#dfdfdf; 
+    padding : 15px; 
     display: grid;
     justify-content: center;
     color : #222 ;
+    height: 203vh;
     margin : 0 auto ;
-    height: 100vh   ;
 }
 
 ul {  
@@ -53,9 +53,9 @@ ul {
 }
 
 h2 { 
-  margin : 0 auto ; 
-  padding : 15px ; 
-  margin-left: 150px;
+  margin-top: -10px;
+  padding : 3px ; 
+  margin-left: 130px;
   height: 45px;
 }
 
@@ -70,7 +70,6 @@ ul li {
 }
 
 #container { 
-  height: 10px;
 }
 
 .infos { 
@@ -80,4 +79,8 @@ ul li {
 
 .instruct { 
   padding : 2px;
+}
+
+#navi { 
+  display: flex;
 }

@@ -46,9 +46,14 @@ const DashboardPage =() => {
   return (
     <Container className="mt-4">
             <ul>
-              <li>
-                <h2> Welcome, {userData[0]} </h2>
-              </li>
+              <div id="navi">              
+                <li>
+                  <h2> Welcome, {userData[0]} </h2>
+                </li>
+                <li id="container">
+                  <button id="button" variant="danger" onClick={handleLogout}>Logout</button>
+                </li>
+              </div>
               <li className="infos">
                 <Infos/>
               </li>
@@ -77,9 +82,6 @@ const DashboardPage =() => {
                 </li> */}
                 <li className='instruct'>
                   <Instruction/>
-                </li>
-                <li id="container">
-                  <button id="button" variant="danger" onClick={handleLogout}>Logout</button>
                 </li>
             </ul>
     </Container>
