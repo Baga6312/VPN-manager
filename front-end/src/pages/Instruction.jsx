@@ -1,37 +1,11 @@
-import '../assets/tests.css'
+import '../assets/tests2.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {   faR , faPlus , faUser,  faAngleUp , faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faWindows } from '@fortawesome/free-brands-svg-icons'
+import {   faR , faPlus } from '@fortawesome/free-solid-svg-icons'
 
-const Tests=() => {
+function Instruction() {
 
   return (
-    <div>
-      {/* initial component */}
-      <h1>welcome Feh</h1>
-      {/* first component */}
-        <div id="container-1">
-          <div id="user-info">
-            <FontAwesomeIcon id="image" icon={faUser} />
-            <div id="icons">
-              <p><strong>Feh</strong></p>
-              <p id="status"><strong> -- </strong></p>
-            </div>
-          </div>
-            <div id="data">
-              <FontAwesomeIcon id="img" icon={faAngleUp} />
-              <p><strong> -- </strong></p>
-              <FontAwesomeIcon id="img" icon={faAngleDown} />
-              <p><strong> -- </strong></p>
-            </div>
-            <div id="ip-address">
-              <p><strong> -- </strong></p>
-            </div>
-            <div id="connection-statue">
-              <p>sex</p>
-            </div>
-        </div> <br/>
-      {/* second component */}
       <div id="container-2">
         <div id="slider">
           <p>If you wish to conenct to the VPN , Downlaod the <a href='#blanc'>.batch file</a> and run it on the cmd by executing <br/><br/><code id="command">connect-to-vpn.bat</code></p>
@@ -68,9 +42,8 @@ const Tests=() => {
           </div> 
         </div>
       </div>
-    </div>
   );
 };
 
 
-export default Tests ; 
+export default Instruction;

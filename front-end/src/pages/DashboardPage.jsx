@@ -3,8 +3,8 @@ import authService from '../services/authService';
 import '../assets/dashboard.css'
 import { Container} from 'react-bootstrap';
 import { useNavigate} from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinus ,  faAngleUp , faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import Infos from './Infos';
+import Instruction from './Instruction';
 
 const DashboardPage =() => {
   const [userData, setUserData] = useState([]);
@@ -45,12 +45,15 @@ const DashboardPage =() => {
 
   return (
     <Container className="mt-4">
-      <h2 id="header">Welcome, {userData[0]} </h2>
-            <ul id="status">
+            <ul>
               <li>
-                <h4>VPN Connection Status</h4>
+                <h2> Welcome, {userData[0]} </h2>
               </li>
-              <li>
+              <li className="infos">
+                <Infos/>
+              </li>
+
+              {/* <li>
                   {info !== "" ? <span class="whiet-spaces">
                   <FontAwesomeIcon icon={faAngleUp}/> 
                     <li>h</li> 
@@ -71,12 +74,14 @@ const DashboardPage =() => {
                   <FontAwesomeIcon icon={faAngleDown}/>
                       </span>
                     }  
+                </li> */}
+                <li className='instruct'>
+                  <Instruction/>
                 </li>
-              <li><p className={info =="" ? 'active-circle' : 'inactive-circle' }>sex</p></li>
+                <li id="container">
+                  <button id="button" variant="danger" onClick={handleLogout}>Logout</button>
+                </li>
             </ul>
-          <div id="container">
-              <button id="button" variant="danger" onClick={handleLogout}>Logout</button>
-          </div>
     </Container>
   );
 };

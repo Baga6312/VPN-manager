@@ -1,8 +1,7 @@
 #container-1 { 
-    justify-content: space-between;
+    justify-content:space-around;
     display: flex;
-    overflow:scroll;
-    width : 48.5% ;
+    width : 100% ;
     background-color: red;
     border-radius: 15px ;
 }
@@ -45,8 +44,10 @@
 }
 
 #container-2 {
-    width : 45%;  
-    padding : 20px ; 
+    width : 65%;  
+    justify-content: center;
+    padding : 20px ;
+    margin-left : 150px; 
     border-radius: 15px;
     background-color: orange;
 }
@@ -64,7 +65,7 @@
 }
 
 #tuto { 
-    width: fit-content;
+    width: 95%;
     height : 800px ; 
     border-radius: 15px ;
     margin-right: 150px;
