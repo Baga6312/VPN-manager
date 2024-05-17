@@ -10,13 +10,13 @@ const DashboardPage =() => {
   const [userData, setUserData] = useState([]);
   const [showComponent , setShowComponenet ] = useState(false)
   const [info , setInfo] = useState("")
-  const history = useNavigate();
+  const navigate = useNavigate();
   const auth = authService()
 
   useEffect(() => {
        const user = auth.getCurrentData()
        if (!user) {
-         history('/login'); // Redirect to login if user is not authenticated
+         navigate('/login'); 
        } else {
           setUserData(user) 
        }
@@ -31,7 +31,7 @@ const DashboardPage =() => {
       };
 
       };
-     }, [history ]
+     }, [navigate]
   );
 
   const submitQuest= () => { 
@@ -40,7 +40,7 @@ const DashboardPage =() => {
 
   const handleLogout = () => {
     auth.logout();
-    history('/login');
+    navigate('/login');
   };
 
   return (
