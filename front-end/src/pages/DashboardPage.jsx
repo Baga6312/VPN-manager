@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import authService from '../services/authService';
 import '../assets/dashboard.css'
-import { Container} from 'react-bootstrap';
-import { useNavigate} from 'react-router-dom';
+import { Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import Infos from './Infos';
 import Instruction from './Instruction';
 
-const DashboardPage =() => {
+const DashboardPage = () => {
   const [userData, setUserData] = useState([]);
-  const [showComponent , setShowComponenet ] = useState(false)
-  const [info , setInfo] = useState("")
+  const [showComponent, setShowComponenet] = useState(false)
+  const [info, setInfo] = useState("")
   const navigate = useNavigate();
   const auth = authService()
 
   useEffect(() => {
-       const user = auth.getCurrentData()
-       if (!user) {
-         navigate('/login'); 
-       } else {
-          setUserData(user) 
-       }
+    const user = auth.getCurrentData()
+    if (!user) {
+      navigate('/login');
+    } else {
+      setUserData(user)
+    }
 
-        const ws = new WebSocket('ws://localhost:5000');
+    const ws = new WebSocket('ws://localhost:5000');
 
-        ws.onopen = () => {
-        console.log('Connected to WebSocket server');
-        ws.onmessage = (event) => {
+    ws.onopen = () => {
+      console.log('Connected to WebSocket server');
+      ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
         setInfo(data);
       };
 
-      };
-     }, [navigate]
+    };
+  }, [navigate]
   );
 
-  const submitQuest= () => { 
+  const submitQuest = () => {
     setShowComponenet(true)
   }
 
@@ -43,22 +43,27 @@ const DashboardPage =() => {
     navigate('/login');
   };
 
+  const handleAdmin = () => {
+    navigate('/admin');
+  }
+
   return (
     <Container className="mt-4">
-            <ul>
-              <div id="navi">              
-                <li>
-                  <h2> Welcome, {userData[0]} </h2>
-                </li>
-                <li id="container">
-                  <button id="button" variant="danger" onClick={handleLogout}>Logout</button>
-                </li>
-              </div>
-              <li className="infos">
-                <Infos/>
-              </li>
+      <ul>
+        <div id="navi">
+          <li >
+            <h2> Welcome, {userData[0]} <button id="button-admin" onClick={handleAdmin}>Admin Panel</button></h2>
 
-              {/* <li>
+          </li>
+          <li id="container" >
+            <button id="button" onClick={handleLogout}>Logout</button>
+          </li>
+        </div>
+        <li className="infos">
+          <Infos username={userData[0]} />
+        </li>
+
+        {/* <li>
                   {info !== "" ? <span class="whiet-spaces">
                   <FontAwesomeIcon icon={faAngleUp}/> 
                     <li>h</li> 
@@ -80,13 +85,13 @@ const DashboardPage =() => {
                       </span>
                     }  
                 </li> */}
-                <li className='instruct'>
-                  <Instruction/>
-                </li>
-            </ul>
-    </Container>
+        <li className='instruct'>
+          <Instruction />
+        </li>
+      </ul>
+    </Container >
   );
 };
 
 
-export default DashboardPage ;
+export default DashboardPage;

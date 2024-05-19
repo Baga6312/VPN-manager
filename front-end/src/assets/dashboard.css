@@ -16,13 +16,24 @@ ul {
 #button  { 
     width : 20% ; 
     margin : 0 auto ; 
-    margin-left: 360px ; 
+    margin-left: 280px ; 
     height : 45px ; 
     color : #fdfdfd ; 
     border : none ; 
     border-radius: 30px ;
     cursor: pointer;
     transition:  .3s ease-in;
+}
+
+#button-admin  { 
+  margin-left: 50px;
+  width: 110px;
+  height : 45px ; 
+  color : #fdfdfd ; 
+  border : none ; 
+  border-radius: 30px ;
+  cursor: pointer;
+  transition:  .3s ease-in;
 }
 
 #button:hover  { 
