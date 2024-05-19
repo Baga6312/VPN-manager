@@ -163,6 +163,11 @@ app.patch('/api/admin/user/:id', authenticate, adminVerification, async (req, re
   res.json({ message: "success" })
 });
 
+// this function can be used to add new user to network
+async function addUserToNetwork(userId, network, ip) {
+  await pool.query(`INSERT INTO network (user, network, ip) VALUES (${userId}, '${network}', '${ip}')`)
+}
+
 server.listen(5000, () => {
   console.log("server is running on port 5000")
 })
